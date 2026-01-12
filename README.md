@@ -22,5 +22,4 @@
 начисленной зарплаты.
 
 **Er-Диаграмма**
-
-![](image.png)
+<img width="1297" height="967" alt="image" src="https://github.com/user-attachments/assets/cff148d3-c49a-4cd1-a00d-0d3688e0913e" />
