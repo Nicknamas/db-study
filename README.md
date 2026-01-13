@@ -1,4 +1,4 @@
-<img width="1315" height="1087" alt="image" src="https://github.com/user-attachments/assets/fdbb72b5-c636-4a23-a7e1-2532d74dc7e1" /><img width="1308" height="973" alt="image" src="https://github.com/user-attachments/assets/abe74f9b-44c2-46fb-aabd-45d6af4c72b1" /><img width="1351" height="612" alt="image" src="https://github.com/user-attachments/assets/e8cfce31-255b-4e7d-bba5-96c32966feb7" /><img width="1300" height="792" alt="image" src="https://github.com/user-attachments/assets/fad1f589-779c-42e4-8b47-335e0b21e8ce" /># Лабораторная работа 1
+# Лабораторная работа 1
 ## 21. Платный прием в поликлинике
 
 Платный прием пациентов проводится врачами разных специальностей
