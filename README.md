@@ -1,4 +1,4 @@
-<img width="1308" height="973" alt="image" src="https://github.com/user-attachments/assets/abe74f9b-44c2-46fb-aabd-45d6af4c72b1" /><img width="1351" height="612" alt="image" src="https://github.com/user-attachments/assets/e8cfce31-255b-4e7d-bba5-96c32966feb7" /><img width="1300" height="792" alt="image" src="https://github.com/user-attachments/assets/fad1f589-779c-42e4-8b47-335e0b21e8ce" /># Лабораторная работа 1
+<img width="1315" height="1087" alt="image" src="https://github.com/user-attachments/assets/fdbb72b5-c636-4a23-a7e1-2532d74dc7e1" /><img width="1308" height="973" alt="image" src="https://github.com/user-attachments/assets/abe74f9b-44c2-46fb-aabd-45d6af4c72b1" /><img width="1351" height="612" alt="image" src="https://github.com/user-attachments/assets/e8cfce31-255b-4e7d-bba5-96c32966feb7" /><img width="1300" height="792" alt="image" src="https://github.com/user-attachments/assets/fad1f589-779c-42e4-8b47-335e0b21e8ce" /># Лабораторная работа 1
 ## 21. Платный прием в поликлинике
 
 Платный прием пациентов проводится врачами разных специальностей
@@ -99,7 +99,7 @@
 <img width="1005" height="525" alt="image" src="https://github.com/user-attachments/assets/d04f3e7f-b2f2-4e8e-90ed-12fcbfd68f88" />
 <img width="1210" height="630" alt="image" src="https://github.com/user-attachments/assets/8fba767f-2742-4989-8db6-5454a686186f" />
 
-# Хранимые процедуры
+# Хранимые процедуры, сложный запрос
 <img width="1200" height="671" alt="image" src="https://github.com/user-attachments/assets/bc0e4219-afa0-4275-8360-f14ff11e30bb" />
 <img width="1266" height="820" alt="image" src="https://github.com/user-attachments/assets/59fa0f4c-5318-4488-9a2c-f1ec1bd31f42" />
 <img width="926" height="890" alt="image" src="https://github.com/user-attachments/assets/a2c906c8-fe80-4351-9b8c-f41b76a7c1b5" />
@@ -114,9 +114,129 @@
 <img width="1177" height="801" alt="image" src="https://github.com/user-attachments/assets/e7fa2c4d-4097-4573-bc3c-8455bea8d5be" />
 <img width="1308" height="973" alt="image" src="https://github.com/user-attachments/assets/91f7b1ea-14d7-4928-a87a-6b5391156b8e" />
 
+# Лабораторная работа 4
+## Генератор данных
+<img width="1372" height="1115" alt="image" src="https://github.com/user-attachments/assets/c923dfa5-b450-41be-b9fc-63889acd90a7" />
+<img width="1398" height="1073" alt="image" src="https://github.com/user-attachments/assets/a945578d-c8b1-4699-a12d-4f94c8fb1033" />
+<img width="1398" height="1073" alt="image" src="https://github.com/user-attachments/assets/d90a9a35-563a-43ba-9619-67e09a7ba84c" />
+<img width="1398" height="1073" alt="image" src="https://github.com/user-attachments/assets/b6e8516d-2701-4992-962c-050e42b7b390" />
+<img width="1391" height="667" alt="image" src="https://github.com/user-attachments/assets/e4524b00-79d5-48fc-8da8-754916582d52" />
 
+## Анализ планов выполнения запросов
+<img width="1208" height="972" alt="image" src="https://github.com/user-attachments/assets/e153e1bd-17c3-43f1-8e55-0f11a32c491d" />
 
+АНАЛИЗ ПЛАНОВ ВЫПОЛНЕНИЯ ЗАПРОСОВ
+================================================================================
 
+1. Запрос 1: Поиск врачей по специальности
+   Описание: Фильтрация по специальности без индекса
+   Запрос: SELECT * FROM Doctors WHERE specialty = 'Терапевт' AND is_deleted = 0
+--------------------------------------------------------------------------------
+   План выполнения (EXPLAIN QUERY PLAN):
+   SEARCH Doctors USING INDEX idx_doctor_specialty (specialty=?)
+
+   Анализ времени выполнения:
+   Среднее время выполнения (10 итераций): 0.0042 секунд
+   Количество возвращаемых строк: 2000
+
+   Анализ использования индексов:
+   Таблица: DOCTORS
+     • Индекс: idx_doctor_specialty (уникальный: 0)
+
+================================================================================
+
+2. Запрос 2: Поиск записей по дате
+   Описание: Фильтрация по дате с функцией DATE()
+   Запрос: SELECT * FROM Appointments WHERE DATE(date_at) = '2024-01-01'
+--------------------------------------------------------------------------------
+   План выполнения (EXPLAIN QUERY PLAN):
+   SCAN Appointments
+
+   Анализ времени выполнения:
+   Среднее время выполнения (10 итераций): 0.0017 секунд
+   Количество возвращаемых строк: 0
+
+   Анализ использования индексов:
+   Таблица: APPOINTMENTS
+     • Индекс: idx_appointment_date (уникальный: 0)
+     • Индекс: idx_patient_id (уникальный: 0)
+     • Индекс: idx_doctor_id (уникальный: 0)
+     • Индекс: sqlite_autoindex_Appointments_1 (уникальный: 1)
+
+================================================================================
+
+3. Запрос 3: JOIN 3 таблиц с агрегацией
+   Описание: Сложный запрос с JOIN и агрегацией
+   Запрос: 
+                    SELECT 
+                        d.specialty,
+                        COUNT(a.id) as appointment_count,
+                        AVG(d.cost_per_appointment) as avg_cost
+                    FROM Doctors d
+                    LEFT JOIN Appointments a ON d.id = a.doctor_id
+                    WHERE d.is_deleted = 0
+                    GROUP BY d.specialty
+                    ORDER BY appointment_count DESC
+                    LIMIT 10
+                    
+--------------------------------------------------------------------------------
+   План выполнения (EXPLAIN QUERY PLAN):
+   SCAN d USING INDEX idx_doctor_specialty
+   SEARCH a USING COVERING INDEX idx_doctor_id (doctor_id=?) LEFT-JOIN
+   USE TEMP B-TREE FOR ORDER BY
+
+   Анализ времени выполнения:
+   Среднее время выполнения (10 итераций): 0.0148 секунд
+   Количество возвращаемых строк: 10
+
+   Анализ использования индексов:
+   Таблица: DOCTORS
+     • Индекс: idx_doctor_specialty (уникальный: 0)
+   Таблица: APPOINTMENTS
+     • Индекс: idx_appointment_date (уникальный: 0)
+     • Индекс: idx_patient_id (уникальный: 0)
+     • Индекс: idx_doctor_id (уникальный: 0)
+     • Индекс: sqlite_autoindex_Appointments_1 (уникальный: 1)
+
+================================================================================
+
+4. Запрос 4: Поиск пациента по медицинской карте
+   Описание: Поиск по уникальному полю
+   Запрос: SELECT * FROM Patients WHERE medical_record = 'MR-000001'
+--------------------------------------------------------------------------------
+   План выполнения (EXPLAIN QUERY PLAN):
+   SEARCH Patients USING INDEX sqlite_autoindex_Patients_1 (medical_record=?)
+
+   Анализ времени выполнения:
+   Среднее время выполнения (10 итераций): 0.0000 секунд
+   Количество возвращаемых строк: 1
+
+   Анализ использования индексов:
+   Таблица: PATIENTS
+     • Индекс: sqlite_autoindex_Patients_1 (уникальный: 1)
+
+================================================================================
+
+## Оптимизация через индексы
+<img width="1395" height="805" alt="image" src="https://github.com/user-attachments/assets/5aeaac41-d39c-4fde-8261-c36cbbdd69a7" />
+
+## Оптимизация через настройки
+<img width="816" height="450" alt="image" src="https://github.com/user-attachments/assets/52a8a122-2471-4afe-9932-50f335956d88" />
+
+ОСНОВНЫЕ ОПТИМИЗАЦИИ:
+• Включен режим WAL для параллельных операций
+• Увеличен размер кэша до 10MB
+• Созданы дополнительные индексы для частых запросов
+• Выполнена дефрагментация базы (VACUUM)
+• Проанализирована статистика (ANALYZE)
+
+ОЖИДАЕМЫЕ РЕЗУЛЬТАТЫ:
+• Ускорение запросов на 30-70%
+• Улучшение параллельной обработки
+• Снижение нагрузки на диск
+• Улучшение использования памяти
+
+<img width="661" height="373" alt="image" src="https://github.com/user-attachments/assets/682ce0b7-fbec-4e19-9da8-1f9b061fa045" />
 
 
 
