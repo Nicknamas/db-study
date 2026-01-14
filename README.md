@@ -22,7 +22,7 @@
 начисленной зарплаты.
 
 **Er-Диаграмма**
-<img width="1297" height="967" alt="image" src="https://github.com/user-attachments/assets/cff148d3-c49a-4cd1-a00d-0d3688e0913e" />
+<img width="1221" height="1007" alt="image" src="https://github.com/user-attachments/assets/7f62ae29-e7bc-4d17-8460-9b47d2a58df9" />
 
 # Лабораторная работа 2
 # Логическая модель по диаграмее
@@ -65,6 +65,7 @@
    Один пациент может относиться ко множеству приемов
 
 # Физическая модель
+<img width="1297" height="967" alt="image" src="https://github.com/user-attachments/assets/cff148d3-c49a-4cd1-a00d-0d3688e0913e" />
 <img width="1126" height="820" alt="image" src="https://github.com/user-attachments/assets/10e464e7-1217-436b-8bf1-9719b54b26b2" />
 <img width="523" height="111" alt="image" src="https://github.com/user-attachments/assets/11030ee8-1070-4a79-ba82-4899c50c249f" />
 
