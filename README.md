@@ -22,7 +22,85 @@
 начисленной зарплаты.
 
 **Er-Диаграмма**
-<img width="1221" height="1007" alt="image" src="https://github.com/user-attachments/assets/7f62ae29-e7bc-4d17-8460-9b47d2a58df9" />
+<img width="1505" height="731" alt="image" src="https://github.com/user-attachments/assets/53d576c9-a846-425b-a99b-a074f05ff2f2" />
+
+Таблица doctors
+Поля:
+
+text
+id (PK)
+first_name
+last_name
+patronymic
+cost_per_appointment
+deductions
+specialty
+created_at
+updated_at
+Анализ:
+
+1НФ ✅ — все значения атомарны, есть первичный ключ.
+2НФ ✅ — ключ простой (id), поэтому автоматически выполняется.
+3НФ ✅ — проверяем транзитивные зависимости:
+
+id → {все остальные поля} — прямая функциональная зависимость.
+
+Проверяем, есть ли зависимости вида A → B → C, где A — ключ:
+specialty не определяет cost_per_appointment (врачи одной специальности могут иметь разную стоимость).
+specialty не определяет deductions (процент может быть разным).
+cost_per_appointment не определяет deductions.
+
+Никакое неключевое поле не определяет другое неключевое поле.
+
+✅ Вывод: Таблица doctors соответствует 3НФ.
+
+Таблица patients
+Поля:
+text
+id (PK)
+first_name, last_name, patronymic
+birthday
+address
+medical_record
+created_at, updated_at
+Анализ:
+
+1НФ ✅
+2НФ ✅ (простой ключ)
+3НФ ✅ — нет транзитивных зависимостей:
+
+address не определяет medical_record и наоборот.
+ФИО не определяет дату рождения или адрес.
+
+✅ Вывод: Таблица patients соответствует 3НФ.
+
+Таблица appointments
+Поля:
+text
+id (PK)
+doctor_id (FK)
+patient_id (FK)
+date_at
+description
+reference_to_specialist
+Анализ:
+
+1НФ ✅
+2НФ ✅ (простой ключ id)
+3НФ ✅ — проверяем:
+
+Все неключевые поля зависят только от id.
+doctor_id и patient_id — внешние ключи, не определяют другие поля в этой таблице.
+reference_to_specialist — текстовая строка, зависит только от id приема.
+
+✅ Вывод: Таблица appointments соответствует 3НФ.
+
+Итоговый вывод:
+Все три таблицы формально соответствуют требованиям 3НФ:
+
+✅ 1НФ — атомарность и первичные ключи.
+✅ 2НФ — все ключи простые, частичных зависимостей нет.
+✅ 3НФ — транзитивных зависимостей не обнаружено.
 
 # Лабораторная работа 2
 # Логическая модель по диаграмее
